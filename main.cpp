@@ -4,6 +4,7 @@
 #include <thread>
 #include "components/text-ui/clearScreen/clearScreen.hpp"
 #include "components/text-ui/titleScreen/titleScreen.hpp"
+#include "components/text-ui/classSelectScreen/classSelectScreen.hpp"
 
 struct PlayerInfo {
     std::string playerName = "Player";
@@ -99,18 +100,6 @@ const PlayerInfo classes[] = {
         .critDmg = 3.0 / 100
     }
 };
-
-void classSelectScreen() {
-    std::cout << "|=================================|\n"
-                 "| Choose your path.               |\n"
-                 "|                                 |\n"
-                 "| 1. Warrior                      |\n"
-                 "| 2. Huntsman                     |\n"
-                 "| 3. Sorcerer                     |\n"
-                 "| 4. Paladin                      |\n"
-                 "| 5. Priest                       |\n"
-                 "|=================================|\n\n";
-}
 
 void classSelect(PlayerInfo& pInfo) {
     int choice{};
