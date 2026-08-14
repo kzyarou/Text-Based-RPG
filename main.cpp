@@ -2,7 +2,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
-
+#include "components/text-ui/clearScreen/clearScreen.hpp"
 struct PlayerInfo {
     std::string playerName = "Player";
     std::string playerClass{};
@@ -13,7 +13,6 @@ struct PlayerInfo {
     double critRate{};
     double critDmg{};
 };
-void clearScreen();
 void titleScreen();
 void classSelectScreen();
 void classSelect(PlayerInfo& pInfo);
@@ -210,13 +209,4 @@ void getPlayerName(PlayerInfo& pInfo) {
     clearScreen();
 
     std::cout << "Welcome, " << pInfo.playerName << "!!!\n\n";
-}
-
-// uses `cls` if using win, else `clear` for linux
-void clearScreen() {
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
 }
