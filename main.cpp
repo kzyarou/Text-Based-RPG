@@ -1,149 +1,214 @@
 #include <iostream>
+#include <string>
+#include <chrono>
+#include <bits/this_thread_sleep.h>
 
-struct Classes {
-    double health;
-    double stamina;
-    double damage;
-    double range;
-    std::string description;
+struct PlayerInfo {
+    std::string playerName = "Player";
+    std::string playerClass{};
+    std::string classDesc{};
+    double health{};
+    double stamina{};
+    double damage{};
+    double critRate{};
+    double critDmg{};
 };
 
-void characterVerification(char& proceed);
-void checkCharacter(std::string& character, char& proceed, bool& hasCharacter, std::string& usedCharacter);
-void printStats(const Classes& character);
+void titleScreen();
+void classSelectScreen();
+void classSelect(PlayerInfo& pInfo);
+void displayClass(const PlayerInfo& pInfo);
+bool confSelection();
+void getPlayerName(PlayerInfo& pInfo);
 
-using text = std::string;
+int main() {
+    PlayerInfo pInfo;
 
-int main () {
+    titleScreen();
 
-    int role = {};
-    text character;
-    char proceed;
-    bool hasCharacter = false;
-    std::string usedCharacter;
-    
-    Classes warrior;
-    Classes archer;
-    Classes sorcerer;
-    Classes tanker;
-    Classes warden;
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000)); // pause for 2 seconds.
 
-    
+    bool selection = true;
+    while (selection) {
+        system("cls"); // clear the screen.
 
-    std::cout << " ______________________________________\n";
-    std::cout << "|                                      |\n";
-    std::cout << "|  Welcome to AnimA, A text based RPG  |\n";
-    std::cout << "|______________________________________|\n";
+        classSelectScreen();
+        classSelect(pInfo);
 
-    do {
-    // Class selection
-    std::cout << "\nPlease choose a class.\n";
-    std::cout << "1. Warrior\n";
-    std::cout << "2. Archer\n";
-    std::cout << "3. Sorcerer\n";
-    std::cout << "4. Tanker\n";
-    std::cout << "5. Warden\n";
-    std::cin >> role;
+        system("cls");
 
-    switch (role) {
-        case 1:
-            character = "warrior";
-            warrior.health = 110;
-            warrior.stamina = 50;
-            warrior.damage = 10;
-            warrior.range = 5;
-            warrior.description = "The Warrior:\nA fierce mortal ready to hack and slash its way to glory.\n";
-            printStats(warrior);
-            
-            characterVerification(proceed);
-            break;
-        case 2:
-            character = "archer";
-            archer.health = 110;
-            archer.stamina = 50;
-            archer.damage = 10;
-            archer.range = 5;
-            archer.description = "The Archer:\nA long range combatant able to penetrate even the thickest of defense.\n";
-            printStats(archer);
-            
-            characterVerification(proceed);
-            break;
-        case 3:
-            character = "sorcerer";
-            sorcerer.health = 110;
-            sorcerer.stamina = 50;
-            sorcerer.damage = 10;
-            sorcerer.range = 5;
-            sorcerer.description = "The Sorcerer:\nA powerful magical being capable of controlling matter.\n";
-            printStats(sorcerer);
-            
-            characterVerification(proceed);
-            break;
-        case 4:
-            character = "tanker";
-            tanker.health = 110;
-            tanker.stamina = 50;
-            tanker.damage = 10;
-            tanker.range = 5;
-            tanker.description = "The Tanker:\nHeavy weight capable of absorbing any damage that comes in its way.\n";
-            printStats(tanker);
-            
-            characterVerification(proceed);
-            break;
-        case 5:
-            character = "warden";
-            warden.health = 110;
-            warden.stamina = 50;
-            warden.damage = 10;
-            warden.range = 5;
-            warden.description = "The Warden:\nAn ancient mystique capable of healing its allies and debuffing its enemies.\n";
-            printStats(warrior);
-            
-            characterVerification(proceed);
-            break;
-        default:
-            std::cout << "Please enter only 1-5!\n";
-            break;
+        displayClass(pInfo);
+        if (confSelection()) {
+            selection = false;
+        }
     }
 
-    if (proceed == 'Y') {
-    std::cout << "You are now a " << character << '\n';
-    hasCharacter = true;
-    }
-    
-    
-    }while(hasCharacter == false);
+    system("cls");
+    getPlayerName(pInfo);
 
+    std::cout << "Press enter to exit...";
+    std::cin.get();
+
+    return 0;
 }
 
-void checkCharacter (std::string& character, char& proceed, bool& hasCharacter, std::string& usedCharacter) {
-    if (proceed == 'Y' || proceed == 'y') {
-        character = usedCharacter;
-        hasCharacter = true;
-    } else if (proceed == 'N' || proceed == 'n') {
-        // Do nothing
-    } else {
-        std::cout << "Please enter only Y/N\n";
+const PlayerInfo classes[] = {
+    {
+        .playerClass = "Warrior",
+        .classDesc = "A fierce mortal ready to hack and slash its way to glory.",
+        .health = 110,
+        .stamina = 60,
+        .damage = 10,
+        .critRate = 8.0 / 100,
+        .critDmg = 10.0 / 100
+    },
+    {
+        .playerClass = "Huntsman",
+        .classDesc = "A skilled marksman able to penetrate even the thickest of defense.",
+        .health = 90,
+        .stamina = 60,
+        .damage = 11,
+        .critRate = 15.0 / 100,
+        .critDmg = 7.5 / 100
+    },
+    {
+        .playerClass = "Sorcerer",
+        .classDesc = "A being of great magical affinity, capable of controlling elements",
+        .health = 75,
+        .stamina = 100,
+        .damage = 15,
+        .critRate = 4.0 / 100,
+        .critDmg = 6.0 / 100
+    },
+    {
+        .playerClass = "Paladin",
+        .classDesc = "A sturdy and headstrong individual that can endure any danger coming their way.",
+        .health = 150,
+        .stamina = 60,
+        .damage = 8,
+        .critRate = 3.0 / 100,
+        .critDmg = 5.0 / 100
+    },
+    {
+        .playerClass = "Priest",
+        .classDesc = "Wields a holy power that is capable of healing their allies and vanquish evil.",
+        .health = 85,
+        .stamina = 80,
+        .damage = 6,
+        .critRate = 10.0 / 100,
+        .critDmg = 3.0 / 100
     }
-}
-void printStats (const Classes & character) {
-    std::cout << character.description;
-    std::cout << "Health: " << character.health << '\n';
-    std::cout << "Stamina: " << character.stamina << '\n'; 
-    std::cout << "Damage: " << character.damage << '\n';
-    std::cout << "Range: " << character.range << '\n'; 
+};
+
+void titleScreen() {
+    std::cout << "|=================================|\n"
+                 "|        Where Ravens Weep        |\n"
+                 "|        A text-based RPG         |\n"
+                 "|=================================|\n\n";
 }
 
-void characterVerification (char& proceed){
-    char proceedChoice;
-    std::cout << "Do you want to proceed?";
-    std::cin >> proceedChoice;
-    
-    if (proceedChoice == 'Y' || proceedChoice == 'y') {
-        proceed = 'Y';
-    } else if (proceed == 'N' || proceed == 'n') {
-        // Do nothing
-    } else {
-        std::cout << "Please enter a valid character (Y/N)";
+void classSelectScreen() {
+    std::cout << "|=================================|\n"
+                 "| Choose your path.               |\n"
+                 "|                                 |\n"
+                 "| 1. Warrior                      |\n"
+                 "| 2. Huntsman                     |\n"
+                 "| 3. Sorcerer                     |\n"
+                 "| 4. Paladin                      |\n"
+                 "| 5. Priest                       |\n"
+                 "|=================================|\n\n";
+}
+
+void classSelect(PlayerInfo& pInfo) {
+    int choice{};
+
+    bool choosing = true;
+
+    while (choosing) {
+        std::cout << '>';
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                pInfo = classes[0];
+                choosing = false;
+                break;
+
+            case 2:
+                pInfo = classes[1];
+                choosing = false;
+                break;
+
+            case 3:
+                pInfo = classes[2];
+                choosing = false;
+                break;
+
+            case 4:
+                pInfo = classes[3];
+                choosing = false;
+                break;
+
+            case 5:
+                pInfo = classes[4];
+                choosing = false;
+                break;
+
+            default:
+                system("cls");
+                classSelectScreen();
+
+                std::cout << "|====================================================================|\n"
+                             "| Being blind would not make your journey easy im afraid. (1-5 only) |\n"
+                             "|====================================================================|\n\n";
+                break;
+        }
     }
+}
+
+void displayClass(const PlayerInfo& pInfo) {
+    std::cout << pInfo.playerClass << '\n';
+    std::cout << "- " << pInfo.classDesc << "\n\n";
+
+    std::cout << "Health: " << pInfo.health << '\n';
+    std::cout << "Stamina: " << pInfo.stamina << '\n';
+    std::cout << "Damage: " << pInfo.damage << '\n';
+    std::cout << "Crit Rate: " << pInfo.critRate * 100.0 << "%\n";
+    std::cout << "Crit Damage: " << pInfo.critDmg * 100.0 << "%\n\n";
+}
+
+bool confSelection() {
+    std::cout << "|=======================================================|\n"
+                 "| Are you sure this is the path you want to take? [Y/N] |\n"
+                 "|=======================================================|\n\n";
+
+    char decision{};
+
+    while (true) {
+        std::cout << '>';
+        std::cin >> decision;
+
+        if (decision == 'N' || decision == 'n') {
+            return false;
+        }
+        else if (decision == 'Y' || decision == 'y') {
+            return true;
+        }
+
+        std::cout << "|=======================================|\n"
+                     "| I worry for you... (Try again. [Y/N]) |\n"
+                     "|=======================================|\n";
+    }
+}
+
+void getPlayerName(PlayerInfo& pInfo) {
+    std::cout << "Well then " << pInfo.playerClass
+              << ", what is your name?\n\n";
+
+    std::cout << '>';
+    std::getline(std::cin >> std::ws, pInfo.playerName);
+
+    system("cls");
+
+    std::cout << "Welcome, " << pInfo.playerName << "!!!\n\n";
 }
