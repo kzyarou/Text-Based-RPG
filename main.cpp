@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <chrono>
-#include <bits/this_thread_sleep.h>
+#include <thread>
 
 struct PlayerInfo {
     std::string playerName = "Player";
@@ -13,7 +13,7 @@ struct PlayerInfo {
     double critRate{};
     double critDmg{};
 };
-
+void clearScreen();
 void titleScreen();
 void classSelectScreen();
 void classSelect(PlayerInfo& pInfo);
@@ -30,20 +30,19 @@ int main() {
 
     bool selection = true;
     while (selection) {
-        system("cls"); // clear the screen.
+        clearScreen(); // clear the screen.
 
         classSelectScreen();
         classSelect(pInfo);
 
-        system("cls");
-
+        clearScreen();
         displayClass(pInfo);
         if (confSelection()) {
             selection = false;
         }
     }
 
-    system("cls");
+    clearScreen();
     getPlayerName(pInfo);
 
     std::cout << "Press enter to exit...";
@@ -155,7 +154,7 @@ void classSelect(PlayerInfo& pInfo) {
                 break;
 
             default:
-                system("cls");
+                clearScreen();
                 classSelectScreen();
 
                 std::cout << "|====================================================================|\n"
@@ -208,7 +207,16 @@ void getPlayerName(PlayerInfo& pInfo) {
     std::cout << '>';
     std::getline(std::cin >> std::ws, pInfo.playerName);
 
-    system("cls");
+    clearScreen();
 
     std::cout << "Welcome, " << pInfo.playerName << "!!!\n\n";
+}
+
+// uses `cls` if using win, else `clear` for linux
+void clearScreen() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
 }
