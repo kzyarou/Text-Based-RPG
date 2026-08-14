@@ -3,6 +3,8 @@
 #include <chrono>
 #include <thread>
 #include "components/text-ui/clearScreen/clearScreen.hpp"
+#include "components/text-ui/titleScreen/titleScreen.hpp"
+
 struct PlayerInfo {
     std::string playerName = "Player";
     std::string playerClass{};
@@ -97,13 +99,6 @@ const PlayerInfo classes[] = {
         .critDmg = 3.0 / 100
     }
 };
-
-void titleScreen() {
-    std::cout << "|=================================|\n"
-                 "|        Where Ravens Weep        |\n"
-                 "|        A text-based RPG         |\n"
-                 "|=================================|\n\n";
-}
 
 void classSelectScreen() {
     std::cout << "|=================================|\n"
