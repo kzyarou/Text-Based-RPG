@@ -9,6 +9,7 @@
 #include "components/text-ui/displayClass/displayClass.hpp"
 #include "components/confirmation/confSelection/confSelection.hpp"
 #include "components/player/player.hpp"
+#include "components/player/getPlayerName/getPlayerName.hpp"
 
 void titleScreen();
 void classSelectScreen();
@@ -45,16 +46,4 @@ int main() {
     std::cin.get();
 
     return 0;
-}
-
-void getPlayerName(PlayerInfo& pInfo) {
-    std::cout << "Well then " << pInfo.playerClass
-              << ", what is your name?\n\n";
-
-    std::cout << '>';
-    std::getline(std::cin >> std::ws, pInfo.playerName);
-
-    clearScreen();
-
-    std::cout << "Welcome, " << pInfo.playerName << "!!!\n\n";
 }
