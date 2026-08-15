@@ -2,6 +2,7 @@
 #include "../../player/player.hpp"
 #include "../clearScreen/clearScreen.hpp"
 #include "../classSelectScreen/classSelectScreen.hpp"
+#include "../../confirmation/clearinput/clearInput.hpp"
 
 void classSelect(PlayerInfo& pInfo) {
     int choice{};
@@ -11,6 +12,8 @@ void classSelect(PlayerInfo& pInfo) {
     while (choosing) {
         std::cout << '>';
         std::cin >> choice;
+
+        clearInput();
 
         switch (choice) {
             case 1:
