@@ -1,10 +1,13 @@
 #include "loadingScreen.hpp"
+#include "../../audio/loadingsfx/loadingSound.hpp"
+
 #include <iostream>
 #include <chrono>
 #include <thread>
 
 void loadingScreen() {
-    const char* frames[]  = {
+
+    const char* frames[] = {
         "[=                                ]",
         "[==                               ]",
         "[===                              ]",
@@ -38,13 +41,31 @@ void loadingScreen() {
         "[==============================   ]",
         "[===============================  ]",
         "[================================ ]",
-        "[=================================]",
+        "[=================================]"
     };
 
-    for (const char* frame : frames) {
-        std::cout << "\r" << frame << std::flush;
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+
+    for (int i = 0; i < 34; i++) {
+
+        std::cout
+            << "\r"
+            << frames[i]
+            << std::flush;
+
+
+        // Play sound every frames
+            loadingTickSound();
+
+
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(50)
+        );
     }
 
+
     std::cout << '\n';
+
+
+    // Finished loading
+    loadingCompleteSound();
 }
