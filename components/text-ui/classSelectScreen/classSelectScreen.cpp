@@ -1,7 +1,9 @@
 #include <iostream>
 #include "classSelectScreen.hpp"
+#include "../../../audio/loadingsfx/loadingSound.hpp"
 
 void classSelectScreen() {
+    loadingTickSound();
     std::cout << "|=================================|\n"
                  "| Choose your path.               |\n"
                  "|                                 |\n"
