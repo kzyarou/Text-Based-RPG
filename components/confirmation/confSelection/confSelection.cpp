@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
 #include "../clearinput/clearInput.hpp"
+#include "../../../audio/loadingsfx/loadingSound.hpp"
 
 bool confSelection() {
+    loadingTickSound();
     std::cout << "|=======================================================|\n"
                  "| Are you sure this is the path you want to take? [Y/N] |\n"
                  "|=======================================================|\n\n";
